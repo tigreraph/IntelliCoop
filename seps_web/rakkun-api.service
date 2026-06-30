@@ -1,29 +1,26 @@
 # ─────────────────────────────────────────────────────────────
-# Systemd service — IntelliCoop (Gunicorn)
-# Copiar a: /etc/systemd/system/intellicoop.service
+# Systemd service — Rakkun FastAPI (Uvicorn)
+# Copiar a: /etc/systemd/system/rakkun-api.service
 # Luego:
 #   systemctl daemon-reload
-#   systemctl enable intellicoop
-#   systemctl start intellicoop
+#   systemctl enable rakkun-api
+#   systemctl start rakkun-api
 # ─────────────────────────────────────────────────────────────
 
 [Unit]
-Description=IntelliCoop — Gunicorn WSGI
+Description=Rakkun API — FastAPI / Uvicorn
 After=network.target postgresql.service
 
 [Service]
 User=root
-Group=www-data
 WorkingDirectory=/var/www/intellicoop/seps_web
 EnvironmentFile=/var/www/intellicoop/seps_web/.env
 
-ExecStart=/var/www/intellicoop/venv/bin/gunicorn \
-    --workers 3 \
-    --bind 127.0.0.1:8000 \
-    --timeout 60 \
-    --access-logfile /var/log/intellicoop/access.log \
-    --error-logfile /var/log/intellicoop/error.log \
-    seps_project.wsgi:application
+ExecStart=/var/www/intellicoop/venv/bin/uvicorn \
+    rakkun_api:app \
+    --host 127.0.0.1 \
+    --port 8001 \
+    --workers 1
 
 Restart=always
 RestartSec=5
