@@ -141,7 +141,8 @@ def ejecutar_sql(sql: str) -> list:
         rows = cur.fetchall()
     finally:
         conn.close()
-    return [dict(r) for r in rows]
+    # Forzar claves a str — psycopg2 puede devolver tipos no serializables como clave
+    return [{str(k): v for k, v in r.items()} for r in rows]
 
 
 def _safe_content(resp_json: dict, turn: int) -> str:

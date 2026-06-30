@@ -241,7 +241,7 @@ def rakkun_chat(request):
             headers={'Content-Type': 'application/json'},
             method='POST'
         )
-        with urllib.request.urlopen(req, timeout=30) as resp:
+        with urllib.request.urlopen(req, timeout=90) as resp:
             data = json.loads(resp.read())
         return JsonResponse(data)
     except urllib.error.HTTPError as e:
