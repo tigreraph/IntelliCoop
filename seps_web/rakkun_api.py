@@ -112,6 +112,7 @@ def limpiar_sql(sql: str) -> str:
     """
     Limpia el SQL generado por el LLM:
     - Reemplaza LIMIT 0, LIMIT ALL, LIMIT con no-dígito, y LIMIT con entero >100
+    - Agrega LIMIT 50 si no hay ningún LIMIT
     """
     # LIMIT ALL o LIMIT con primer carácter no numérico
     sql = re.sub(
@@ -127,22 +128,45 @@ def limpiar_sql(sql: str) -> str:
         val = int(m.group(1))
         return f'LIMIT {min(val, 100)}'
     sql = re.sub(r'LIMIT\s*(\d+)', cap_limit, sql, flags=re.IGNORECASE)
-    return sql.strip()
+    sql = sql.strip().rstrip(';')
+    # Si el LLM no puso LIMIT, agregar uno por defecto
+    if not re.search(r'\bLIMIT\b', sql, re.IGNORECASE):
+        sql += '\nLIMIT 50'
+    return sql
+
+
+def _serialize_val(v):
+    """Convierte tipos psycopg2 a primitivos Python serializables por JSON."""
+    if v is None:
+        return None
+    if isinstance(v, bool):
+        return v
+    if isinstance(v, int):
+        return v
+    if hasattr(v, 'isoformat'):          # date / datetime
+        return str(v)
+    if hasattr(v, '__float__'):           # Decimal, float
+        return float(v)
+    return v
 
 
 def ejecutar_sql(sql: str) -> list:
     sql = limpiar_sql(sql)
-    if not sql.upper().startswith("SELECT"):
+    if not sql.upper().strip().startswith("SELECT"):
         return [{"error": "Solo se permiten consultas SELECT"}]
     conn = psycopg2.connect(**DB)
     try:
-        cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        # Cursor normal (no RealDict) → cur.description siempre devuelve str como nombre de columna
+        cur = conn.cursor()
         cur.execute(sql)
+        cols = [desc[0] for desc in cur.description]   # lista de strings garantizada
         rows = cur.fetchall()
     finally:
         conn.close()
-    # Forzar claves a str — psycopg2 puede devolver tipos no serializables como clave
-    return [{str(k): v for k, v in r.items()} for r in rows]
+    return [
+        {col: _serialize_val(val) for col, val in zip(cols, row)}
+        for row in rows
+    ]
 
 
 def _safe_content(resp_json: dict, turn: int) -> str:
