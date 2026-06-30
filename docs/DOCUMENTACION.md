@@ -712,6 +712,31 @@ git push
 cd /var/www/intellicoop && git pull && systemctl restart intellicoop
 ```
 
+### Errores encontrados en el primer push y soluciones
+
+**Error 1 — Archivo > 100 MB:**
+```
+remote: error: File seps_web/static/live2d/rakkun/RakkunFormal.cmo3 is 102.94 MB
+```
+`RakkunFormal.cmo3` es el fuente de Cubism Editor — no se necesita en el servidor.
+**Fix:** agregar `*.cmo3` al `.gitignore` + `git rm --cached "ruta/archivo.cmo3"` + `git commit --amend`.
+
+**Error 2 — GitHub Push Protection (secreto detectado):**
+```
+remote: error: GH013: Repository rule violations found — Push cannot contain secrets
+remote: OpenRouter API Key detectada en seps_web/start_local.ps1:9
+```
+La API key de OpenRouter estaba hardcodeada en `start_local.ps1`.
+**Fix:** refactorizar el script para leer del `.env` con `Get-Content` en PowerShell:
+```powershell
+Get-Content $envFile | ForEach-Object {
+    if ($_ -match '^\s*([^#][^=]*)\s*=\s*(.*)\s*$') {
+        [System.Environment]::SetEnvironmentVariable($matches[1].Trim(), $matches[2].Trim(), 'Process')
+    }
+}
+```
+Regla: **nunca hardcodear API keys en scripts**, siempre usar `.env`.
+
 ### Archivos grandes al VPS (primera vez, por SCP)
 
 ```powershell
@@ -824,7 +849,23 @@ Los primeros 2 dígitos del RUC identifican la provincia sin datos externos:
 | 2026-06-29 | `.env.example`: plantilla con todas las variables (incluye `GOOGLE_TTS_KEY`, `SECRET_KEY`) | ✅ |
 | 2026-06-29 | **Plan ML aprobado**: 8 fases (Feature Eng → Mapa → COVID → Clustering → Morosidad → Alerta → Anomalías → Web) | ✅ |
 | 2026-06-29 | Arquitectura ML: entrenamiento local DuckDB/PostgreSQL → .pkl → SCP al VPS → inferencia Django | ✅ |
+| 2026-06-30 | **GitHub push exitoso**: repo público `github.com/tigreraph/IntelliCoop` | ✅ |
+| 2026-06-30 | Fix push #1: `RakkunFormal.cmo3` (102 MB) excedía límite GitHub 100 MB → agregar `*.cmo3` al `.gitignore` + `git rm --cached` | ✅ |
+| 2026-06-30 | Fix push #2: GitHub Push Protection detectó OpenRouter API key hardcodeada en `start_local.ps1` | ✅ |
+| 2026-06-30 | `start_local.ps1` refactorizado: lee credenciales desde `.env` con `Get-Content` → sin secretos en código | ✅ |
+| 2026-06-30 | `.env.example` actualizado con `OPENROUTER_KEY` | ✅ |
+| 2026-06-30 | **Deploy VPS exitoso** — IntelliCoop activo en http://157.230.62.218 | ✅ |
+| 2026-06-30 | Fix deploy: puerto 8000 ocupado por Gunicorn viejo → `fuser -k 8000/tcp` | ✅ |
+| 2026-06-30 | Servicios systemd: `intellicoop.service` + `rakkun-api.service` con `EnvironmentFile` | ✅ |
+| 2026-06-30 | Nginx configurado: static files directo, proxy a Gunicorn en 127.0.0.1:8000 | ✅ |
+| 2026-06-30 | **Fix Chat Rakkun #1**: `TypeError: keys must be str` en `ejecutar_sql` — `RealDictCursor` devolvía tipo psycopg2 como clave | ✅ |
+| 2026-06-30 | **Fix Chat Rakkun #2**: Markdown pipe tables `\| col \|` en respuesta — SYSTEM_PASO2 actualizado para prohibir tablas markdown | ✅ |
+| 2026-06-30 | Django proxy timeout aumentado de 30s a 90s (`rakkun_chat`) para acomodar latencia DeepSeek V3 | ✅ |
+| 2026-06-30 | **Fix Chat Rakkun #3 (definitivo)**: reemplazado `RealDictCursor` por cursor normal + `cur.description` en `ejecutar_sql` — claves garantizadas como strings Python puros | ✅ |
+| 2026-06-30 | `_serialize_val()` helper: convierte `Decimal`, `date`, `datetime` a primitivos JSON-serializables antes de devolver filas | ✅ |
+| 2026-06-30 | `limpiar_sql()` mejorado: agrega `LIMIT 50` por defecto cuando el SQL generado por el LLM no incluye ningún LIMIT (corrige queries genéricas sin número) | ✅ |
+| 2026-06-30 | Nginx `proxy_read_timeout` aumentado de 60s a 120s — evitaba cortar respuestas antes del timeout Django de 90s | ✅ |
 
 ---
 
-*Documentación generada el 2026-06-24 · Actualizada el 2026-06-29 · IntelliCoop v1.1*
+*Documentación generada el 2026-06-24 · Actualizada el 2026-06-30 · IntelliCoop v1.3 — EN PRODUCCIÓN*
