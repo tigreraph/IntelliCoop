@@ -1,0 +1,25 @@
+{
+    "Type": "Live2D Expression",
+    "Parameters": [
+        {
+            "Id": "ParamExpArmR",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamExpArmL",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamGamingArms1",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamGamingArmsOnOff",
+            "Value": "1",
+            "Blend": "Add"
+        }
+    ]
+}

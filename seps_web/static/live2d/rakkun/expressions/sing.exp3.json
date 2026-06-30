@@ -1,0 +1,50 @@
+{
+    "Type": "Live2D Expression",
+    "Parameters": [
+        {
+            "Id": "ParamExpArmR",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamExpArmL",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamArtHand",
+            "Value": "0",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamArtHandOnOff",
+            "Value": "0",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamSingHand",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamSingHandOnOff",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamGamingArms1",
+            "Value": "0",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamGamingArmsOnOff",
+            "Value": "0",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamArmPhyOnOff",
+            "Value": "1",
+            "Blend": "Add"
+        }
+    ]
+}

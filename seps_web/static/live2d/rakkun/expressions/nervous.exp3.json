@@ -1,0 +1,25 @@
+{
+    "Type": "Live2D Expression",
+    "Parameters": [
+        {
+            "Id": "ParamMouthExpression",
+            "Value": "-0.266",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamEyeExp",
+            "Value": "-1.25",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamNervous",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamMouthForm",
+            "Value": "-0.26009",
+            "Blend": "Add"
+        }
+    ]
+}

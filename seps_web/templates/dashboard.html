@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — IntelliCoop{% endblock %}
+{% block head %}<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>{% endblock %}
+
+{% block page_title %}Dashboard General{% endblock %}
+{% block page_subtitle %}Corte: <span style="color:var(--indigo);font-weight:600;font-family:'Fira Code',monospace;">{{ kpis.ultimo_corte }}</span> &nbsp;&bull;&nbsp; {{ kpis.total_coops }} cooperativas activas supervisadas{% endblock %}
+
+{% block content %}
+
+{% if sin_datos %}
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:40vh;gap:12px;text-align:center;">
+  <i class="ti ti-database-off" style="font-size:48px;color:var(--text-4);"></i>
+  <p style="font-size:16px;font-weight:600;color:var(--text-2);">Sin datos disponibles</p>
+  <p style="font-size:13px;color:var(--text-4);">No hay registros en fact_indicadores. Ejecuta el ETL primero.</p>
+</div>
+{% else %}
+
+<!-- KPI Cards -->
+<div class="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6 fade-in fade-in-1">
+
+  <!-- Cooperativas -->
+  <div class="kpi-card">
+    <div class="kpi-accent" style="background:linear-gradient(90deg,#818cf8,#6366f1);"></div>
+    <div class="kpi-glow" style="background:#818cf8;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+      <p style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Cooperativas</p>
+      <div style="width:28px;height:28px;border-radius:8px;background:rgba(129,140,248,.12);border:1px solid rgba(129,140,248,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ti-building-bank" style="font-size:14px;color:#818cf8;"></i>
+      </div>
+    </div>
+    <p class="font-data" style="font-size:32px;font-weight:600;color:var(--text-1);line-height:1;">{{ kpis.total_coops }}</p>
+    <p style="font-size:10px;color:var(--text-4);margin-top:6px;">activas supervisadas</p>
+  </div>
+
+  <!-- CAMEL -->
+  <div class="kpi-card">
+    <div class="kpi-accent" style="background:linear-gradient(90deg,#38bdf8,#0ea5e9);"></div>
+    <div class="kpi-glow" style="background:#38bdf8;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+      <p style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;">CAMEL Prom.</p>
+      <div style="width:28px;height:28px;border-radius:8px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ti-chart-radar" style="font-size:14px;color:#38bdf8;"></i>
+      </div>
+    </div>
+    <p class="font-data" style="font-size:32px;font-weight:600;color:#38bdf8;line-height:1;">{{ kpis.camel_promedio }}</p>
+    <div style="margin-top:8px;height:4px;background:#e2e8f0;border-radius:4px;overflow:hidden;">
+      <div style="height:4px;background:linear-gradient(90deg,#38bdf8,#0ea5e9);border-radius:4px;width:{{ kpis.camel_promedio }}%;transition:width .8s cubic-bezier(.16,1,.3,1);"></div>
+    </div>
+    <p style="font-size:10px;color:var(--text-4);margin-top:4px;">score 0 &ndash; 100</p>
+  </div>
+
+  <!-- Morosidad -->
+  <div class="kpi-card">
+    {% if kpis.morosidad_promedio <= 5 %}
+    <div class="kpi-accent" style="background:linear-gradient(90deg,#34d399,#10b981);"></div>
+    <div class="kpi-glow" style="background:#34d399;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+      <p style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Morosidad Prom.</p>
+      <div style="width:28px;height:28px;border-radius:8px;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ti-percentage" style="font-size:14px;color:#34d399;"></i>
+      </div>
+    </div>
+    <p class="font-data" style="font-size:32px;font-weight:600;color:#34d399;line-height:1;">{{ kpis.morosidad_promedio }}%</p>
+    <div style="margin-top:8px;height:4px;background:#e2e8f0;border-radius:4px;overflow:hidden;" title="Uso del umbral: {{ kpis.morosidad_promedio }}% de 5% máximo">
+      <div style="height:4px;background:linear-gradient(90deg,#34d399,#10b981);border-radius:4px;width:{{ kpis.morosidad_promedio|floatformat:0 }}0%;max-width:100%;transition:width .8s;"></div>
+    </div>
+    <p style="font-size:10px;color:rgba(52,211,153,.7);margin-top:4px;">✓ umbral SEPS &le;5%</p>
+    {% else %}
+    <div class="kpi-accent" style="background:linear-gradient(90deg,#f87171,#ef4444);"></div>
+    <div class="kpi-glow" style="background:#f87171;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+      <p style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Morosidad Prom.</p>
+      <div style="width:28px;height:28px;border-radius:8px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ti-percentage" style="font-size:14px;color:#f87171;"></i>
+      </div>
+    </div>
+    <p class="font-data" style="font-size:32px;font-weight:600;color:#f87171;line-height:1;">{{ kpis.morosidad_promedio }}%</p>
+    <div style="margin-top:8px;height:4px;background:#e2e8f0;border-radius:4px;overflow:hidden;">
+      <div style="height:4px;background:linear-gradient(90deg,#f87171,#ef4444);border-radius:4px;width:100%;"></div>
+    </div>
+    <p style="font-size:10px;color:rgba(248,113,113,.7);margin-top:4px;">&#9650; sobre umbral (5%)</p>
+    {% endif %}
+  </div>
+
+  <!-- Liquidez -->
+  <div class="kpi-card">
+    {% if kpis.liquidez_promedio >= 14 %}
+    <div class="kpi-accent" style="background:linear-gradient(90deg,#34d399,#10b981);"></div>
+    <div class="kpi-glow" style="background:#34d399;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+      <p style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Liquidez Prom.</p>
+      <div style="width:28px;height:28px;border-radius:8px;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ti-droplet" style="font-size:14px;color:#34d399;"></i>
+      </div>
+    </div>
+    <p class="font-data" style="font-size:32px;font-weight:600;color:#34d399;line-height:1;">{{ kpis.liquidez_promedio }}%</p>
+    <div style="margin-top:8px;height:4px;background:#e2e8f0;border-radius:4px;overflow:hidden;" title="Liquidez vs umbral 14%">
+      <div style="height:4px;background:linear-gradient(90deg,#34d399,#10b981);border-radius:4px;width:100%;"></div>
+    </div>
+    <p style="font-size:10px;color:rgba(52,211,153,.7);margin-top:4px;">✓ umbral SEPS &ge;14%</p>
+    {% else %}
+    <div class="kpi-accent" style="background:linear-gradient(90deg,#f87171,#ef4444);"></div>
+    <div class="kpi-glow" style="background:#f87171;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+      <p style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Liquidez Prom.</p>
+      <div style="width:28px;height:28px;border-radius:8px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ti-droplet" style="font-size:14px;color:#f87171;"></i>
+      </div>
+    </div>
+    <p class="font-data" style="font-size:32px;font-weight:600;color:#f87171;line-height:1;">{{ kpis.liquidez_promedio }}%</p>
+    <div style="margin-top:8px;height:4px;background:#e2e8f0;border-radius:4px;overflow:hidden;" title="Liquidez vs umbral 14%">
+      <div style="height:4px;background:linear-gradient(90deg,#f87171,#ef4444);border-radius:4px;width:{{ kpis.liquidez_promedio|floatformat:0 }}%;max-width:95%;"></div>
+    </div>
+    <p style="font-size:10px;color:rgba(248,113,113,.7);margin-top:4px;">&#9660; bajo umbral (14%)</p>
+    {% endif %}
+  </div>
+
+  <!-- Activos -->
+  <div class="kpi-card">
+    <div class="kpi-accent" style="background:linear-gradient(90deg,#fbbf24,#f59e0b);"></div>
+    <div class="kpi-glow" style="background:#fbbf24;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+      <p style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;font-weight:600;">Activos Sistema</p>
+      <div style="width:28px;height:28px;border-radius:8px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ti-coins" style="font-size:14px;color:#fbbf24;"></i>
+      </div>
+    </div>
+    <p class="font-data" style="font-size:32px;font-weight:600;color:#fbbf24;line-height:1;">{{ kpis.activos_sistema_b }}<span style="font-size:18px;opacity:.7;">B</span></p>
+    <p style="font-size:10px;color:var(--text-4);margin-top:6px;">USD · total supervisado</p>
+  </div>
+
+</div>
+
+<!-- Fila principal -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-5 fade-in fade-in-2">
+
+  <!-- Donut chart -->
+  <div class="ic-card">
+    <h2 style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:2px;">Distribución por Segmento</h2>
+    <p style="font-size:11px;color:var(--text-3);margin-bottom:16px;">Cooperativas activas por segmento</p>
+    <canvas id="chartSeg" height="230"></canvas>
+  </div>
+
+  <!-- Top 5 -->
+  <div class="ic-card">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+      <div style="width:32px;height:32px;border-radius:9px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ti-trending-up" style="font-size:16px;color:#34d399;"></i>
+      </div>
+      <div>
+        <h2 style="font-size:14px;font-weight:600;color:#34d399;">Top 5 CAMEL</h2>
+        <p style="font-size:11px;color:var(--text-3);">Mejor desempeño financiero</p>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:13px;">
+      {% for c in top5 %}
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="width:22px;height:22px;border-radius:7px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);font-size:10px;font-weight:700;color:#34d399;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Fira Code',monospace;">{{ forloop.counter }}</span>
+          <div style="flex:1;min-width:0;">
+            <a href="{% url 'cooperativa_detalle' c.ruc %}"
+               style="font-size:12px;font-weight:500;color:var(--text-2);text-decoration:none;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .15s;"
+               onmouseover="this.style.color='#34d399'" onmouseout="this.style.color='var(--text-2)'">{{ c.razon_social }}</a>
+            <p style="font-size:10px;color:var(--text-4);">{{ c.segmento }}</p>
+          </div>
+          <span class="font-data" style="font-size:15px;font-weight:600;color:#34d399;flex-shrink:0;">{{ c.camel_score }}</span>
+        </div>
+        <div style="margin:5px 0 0 32px;height:3px;background:rgba(52,211,153,.1);border-radius:2px;overflow:hidden;">
+          <div style="height:3px;background:linear-gradient(90deg,#34d399,#6ee7b7);border-radius:2px;width:{{ c.camel_score|floatformat:0 }}%;transition:width .6s cubic-bezier(.16,1,.3,1);"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Bottom 5 -->
+  <div class="ic-card">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+      <div style="width:32px;height:32px;border-radius:9px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i class="ti ti-trending-down" style="font-size:16px;color:#f87171;"></i>
+      </div>
+      <div>
+        <h2 style="font-size:14px;font-weight:600;color:#f87171;">Bottom 5 CAMEL</h2>
+        <p style="font-size:11px;color:var(--text-3);">Cooperativas con mayor riesgo</p>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:13px;">
+      {% for c in bottom5 %}
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="width:22px;height:22px;border-radius:7px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);font-size:10px;font-weight:700;color:#f87171;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Fira Code',monospace;">{{ forloop.counter }}</span>
+          <div style="flex:1;min-width:0;">
+            <a href="{% url 'cooperativa_detalle' c.ruc %}"
+               style="font-size:12px;font-weight:500;color:var(--text-2);text-decoration:none;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .15s;"
+               onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='var(--text-2)'">{{ c.razon_social }}</a>
+            <p style="font-size:10px;color:var(--text-4);">{{ c.segmento }}</p>
+          </div>
+          <span class="font-data" style="font-size:15px;font-weight:600;color:#f87171;flex-shrink:0;">{{ c.camel_score }}</span>
+        </div>
+        <div style="margin:5px 0 0 32px;height:3px;background:rgba(248,113,113,.1);border-radius:2px;overflow:hidden;">
+          <div style="height:3px;background:linear-gradient(90deg,#f87171,#fca5a5);border-radius:2px;width:{{ c.camel_score|floatformat:0 }}%;transition:width .6s cubic-bezier(.16,1,.3,1);"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if not sin_datos %}
+<script>
+const seg = {{ por_segmento|safe }};
+
+const centerTextPlugin = {
+  id: 'centerText',
+  afterDraw(chart) {
+    if (chart.config.type !== 'doughnut') return;
+    const { ctx, chartArea } = chart;
+    if (!chartArea) return;
+    const cx = chartArea.left + chartArea.width / 2;
+    const cy = chartArea.top + chartArea.height / 2;
+    const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+    ctx.save();
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '700 28px Fira Code, monospace';
+    ctx.fillStyle = '#0f172a';
+    ctx.fillText(total, cx, cy - 10);
+    ctx.font = '500 10px Inter, sans-serif';
+    ctx.fillStyle = '#94a3b8';
+    ctx.letterSpacing = '0.08em';
+    ctx.fillText('COOPS', cx, cy + 12);
+    ctx.restore();
+  }
+};
+
+new Chart(document.getElementById('chartSeg'), {
+  type: 'doughnut',
+  plugins: [centerTextPlugin],
+  data: {
+    labels: seg.map(s => s.segmento),
+    datasets: [{
+      data: seg.map(s => s.cantidad),
+      backgroundColor: ['#818cf8','#34d399','#fbbf24','#f87171'],
+      borderWidth: 3,
+      borderColor: '#ffffff',
+      hoverBorderColor: '#f1f5f9',
+      hoverOffset: 5,
+    }]
+  },
+  options: {
+    responsive: true,
+    cutout: '70%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          color: '#64748b',
+          font: { size: 11, family: 'Inter' },
+          padding: 16, boxWidth: 10,
+          usePointStyle: true, pointStyle: 'circle',
+        }
+      },
+      tooltip: {
+        backgroundColor: '#ffffff',
+        borderColor: '#e2e8f0',
+        borderWidth: 1,
+        titleColor: '#0f172a',
+        bodyColor: '#64748b',
+        padding: 10,
+        callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} coops` }
+      }
+    },
+    animation: { animateRotate: true, duration: 800, easing: 'easeOutQuart' }
+  }
+});
+</script>
+{% endif %}
+{% endblock %}

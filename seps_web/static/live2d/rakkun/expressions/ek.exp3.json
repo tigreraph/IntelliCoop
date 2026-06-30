@@ -1,0 +1,40 @@
+{
+	"Type": "Live2D Expression",
+	"Parameters": [
+		{
+			"Id": "ParamMouthExpression",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamIrisExpression",
+			"Value": -1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamEyeExpression",
+			"Value": 0.7,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamBrowExpression",
+			"Value": -1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamAhogeExpressionR",
+			"Value": -1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamAhogeExpressionL",
+			"Value": 0.5,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"Value": 1,
+			"Blend": "Add"
+		}
+	]
+}

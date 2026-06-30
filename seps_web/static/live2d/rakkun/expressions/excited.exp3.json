@@ -1,0 +1,40 @@
+{
+    "Type": "Live2D Expression",
+    "Parameters": [
+        {
+            "Id": "ParamMouthExpression",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamEyeExp",
+            "Value": "2",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamExcited",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamEyeStar",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamEyeRSmile",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamEyeLSmile",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamMouthForm",
+            "Value": "1",
+            "Blend": "Add"
+        }
+    ]
+}

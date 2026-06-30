@@ -1,0 +1,35 @@
+{
+    "Type": "Live2D Expression",
+    "Parameters": [
+        {
+            "Id": "ParamMouthExpression",
+            "Value": "-1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamEyeExp",
+            "Value": "-0.20533",
+            "Blend": "Add"
+        },
+        {
+            "Id": "Paramblackshadow",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamHLOnOff",
+            "Value": "1",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamEyeROpen",
+            "Value": "-0.25",
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamEyeLOpen",
+            "Value": "-0.25",
+            "Blend": "Add"
+        }
+    ]
+}

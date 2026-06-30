@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% block title %}Ranking CAMEL — IntelliCoop{% endblock %}
+
+{% block page_title %}Ranking CAMEL{% endblock %}
+{% block page_subtitle %}Cooperativas activas ordenadas por score CAMEL (0&ndash;100){% endblock %}
+{% block topbar_actions %}
+  <span style="font-size:11px;color:var(--indigo);background:rgba(99,102,241,.12);padding:4px 12px;border-radius:20px;border:1px solid rgba(129,140,248,.2);font-family:'Fira Code',monospace;">{{ cooperativas|length }} coops</span>
+{% endblock %}
+
+{% block content %}
+
+<!-- Filtros -->
+<div class="flex flex-col sm:flex-row gap-3 mb-5 fade-in">
+  <div class="relative flex-1">
+    <i class="ti ti-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-4);font-size:15px;pointer-events:none;"></i>
+    <input id="searchInput" type="text" placeholder="Buscar cooperativa por nombre o RUC..."
+           class="ic-input w-full" style="padding-left:36px;">
+  </div>
+  <select id="segmentoFilter" class="ic-select" style="min-width:190px;">
+    <option value="">Todos los segmentos</option>
+    <option value="Segmento 1">Segmento 1</option>
+    <option value="Segmento 1 Mutualista">Segmento 1 Mutualista</option>
+    <option value="Segmento 2">Segmento 2</option>
+    <option value="Segmento 3">Segmento 3</option>
+  </select>
+  <div style="display:flex;align-items:center;font-size:12px;color:var(--text-3);white-space:nowrap;gap:4px;">
+    Mostrando <span id="countNum" class="font-data" style="color:var(--text-1);font-weight:600;margin:0 4px;">{{ cooperativas|length }}</span> cooperativas
+  </div>
+</div>
+
+<!-- Tabla -->
+<div class="ic-card !p-0 overflow-hidden fade-in fade-in-1" style="border-radius:14px;">
+  <div style="overflow-x:auto;">
+    <table class="ic-table" id="rankingTable">
+      <thead>
+        <tr>
+          <th style="width:44px;text-align:center;">#</th>
+          <th class="sortable" style="cursor:pointer;" data-col="1">Cooperativa <span class="sort-icon" style="color:var(--text-4);margin-left:4px;">⇅</span></th>
+          <th class="sortable" style="cursor:pointer;" data-col="2">Segmento <span class="sort-icon" style="color:var(--text-4);margin-left:4px;">⇅</span></th>
+          <th class="sortable" style="cursor:pointer;text-align:right;" data-col="3" data-type="num">CAMEL <span class="sort-icon" style="color:var(--text-4);margin-left:4px;">⇅</span></th>
+          <th>Rating</th>
+          <th class="sortable" style="cursor:pointer;text-align:right;" data-col="5" data-type="num">Morosidad <span class="sort-icon" style="color:var(--text-4);margin-left:4px;">⇅</span></th>
+          <th class="sortable" style="cursor:pointer;text-align:right;" data-col="6" data-type="num">Capital <span class="sort-icon" style="color:var(--text-4);margin-left:4px;">⇅</span></th>
+          <th class="sortable" style="cursor:pointer;text-align:right;" data-col="7" data-type="num">Liquidez <span class="sort-icon" style="color:var(--text-4);margin-left:4px;">⇅</span></th>
+          <th class="sortable" style="cursor:pointer;text-align:right;" data-col="8" data-type="num">ROA <span class="sort-icon" style="color:var(--text-4);margin-left:4px;">⇅</span></th>
+          <th style="width:36px;"></th>
+        </tr>
+      </thead>
+      <tbody id="rankingBody">
+        {% for c in cooperativas %}
+        <tr>
+          <td style="text-align:center;">
+            <span class="font-data" style="font-size:11px;color:var(--text-4);font-weight:500;">{{ forloop.counter }}</span>
+          </td>
+
+          <td>
+            <a href="{% url 'cooperativa_detalle' c.ruc %}"
+               title="{{ c.razon_social }}"
+               style="font-size:13px;font-weight:500;color:var(--text-1);text-decoration:none;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px;transition:color .15s;"
+               onmouseover="this.style.color='#818cf8'" onmouseout="this.style.color='var(--text-1)'">{{ c.razon_social }}</a>
+            <span class="font-data" style="font-size:10px;color:var(--text-4);">{{ c.ruc }}</span>
+          </td>
+
+          <td style="font-size:12px;color:var(--text-3);white-space:nowrap;">{{ c.segmento }}</td>
+
+          <td style="text-align:right;">
+            <span class="font-data" style="font-size:14px;font-weight:600;
+              {% if c.camel_score >= 80 %}color:#34d399;
+              {% elif c.camel_score >= 60 %}color:#a3e635;
+              {% elif c.camel_score >= 40 %}color:#fbbf24;
+              {% elif c.camel_score >= 20 %}color:#fb923c;
+              {% else %}color:#f87171;{% endif %}">
+              {{ c.camel_score }}
+            </span>
+          </td>
+
+          <td>
+            {% if c.rating_camel == 'Excelente' %}
+            <span class="badge badge-excellent"><i class="ti ti-circle-check" style="font-size:10px;"></i>{{ c.rating_camel }}</span>
+            {% elif c.rating_camel == 'Bueno' %}
+            <span class="badge badge-good"><i class="ti ti-thumb-up" style="font-size:10px;"></i>{{ c.rating_camel }}</span>
+            {% elif c.rating_camel == 'Regular' %}
+            <span class="badge badge-regular"><i class="ti ti-minus" style="font-size:10px;"></i>{{ c.rating_camel }}</span>
+            {% elif c.rating_camel == 'Deficiente' %}
+            <span class="badge badge-deficient"><i class="ti ti-alert-triangle" style="font-size:10px;"></i>{{ c.rating_camel }}</span>
+            {% else %}
+            <span class="badge badge-critical"><i class="ti ti-alert-circle" style="font-size:10px;"></i>{{ c.rating_camel }}</span>
+            {% endif %}
+          </td>
+
+          <td class="font-data" style="text-align:right;font-size:13px;
+            {% if c.morosidad_pct <= 5 %}color:#34d399;{% else %}color:#f87171;{% endif %}">
+            {{ c.morosidad_pct }}%
+          </td>
+
+          <td class="font-data" style="text-align:right;font-size:13px;
+            {% if c.capitalizacion_pct >= 9 %}color:#34d399;{% else %}color:#f87171;{% endif %}">
+            {{ c.capitalizacion_pct }}%
+          </td>
+
+          <td class="font-data" style="text-align:right;font-size:13px;
+            {% if c.liquidez_ampliada >= 14 %}color:#34d399;{% else %}color:#f87171;{% endif %}">
+            {{ c.liquidez_ampliada }}%
+          </td>
+
+          <td class="font-data" style="text-align:right;font-size:13px;
+            {% if c.roa_pct >= 0 %}color:#34d399;{% else %}color:#f87171;{% endif %}">
+            {{ c.roa_pct }}%
+          </td>
+
+          <td style="text-align:right;">
+            <a href="{% url 'cooperativa_detalle' c.ruc %}"
+               style="color:var(--text-4);transition:color .15s;display:inline-flex;"
+               onmouseover="this.style.color='#818cf8'" onmouseout="this.style.color='var(--text-4)'">
+              <i class="ti ti-chevron-right" style="font-size:16px;"></i>
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="10" style="text-align:center;padding:48px 0;color:var(--text-4);">
+          <i class="ti ti-database-off" style="font-size:32px;display:block;margin-bottom:8px;"></i>
+          Sin datos disponibles
+        </td></tr>
+        {% endfor %}
+        <!-- Estado "sin resultados" del filtro cliente -->
+        <tr id="noResultsRow" style="display:none;">
+          <td colspan="10" style="text-align:center;padding:40px 0;">
+            <i class="ti ti-search-off" style="font-size:36px;color:#cbd5e1;display:block;margin-bottom:10px;"></i>
+            <p style="font-size:14px;font-weight:600;color:var(--text-3);margin:0 0 4px;">Sin resultados</p>
+            <p style="font-size:12px;color:var(--text-4);margin:0;">Intenta con otro nombre, RUC o segmento</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Leyenda -->
+<div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:16px;font-size:11px;color:var(--text-4);" class="fade-in fade-in-2">
+  <span><span style="color:#34d399;font-weight:600;">Verde</span> = dentro del umbral SEPS</span>
+  <span><span style="color:#f87171;font-weight:600;">Rojo</span> = fuera del umbral</span>
+  <span style="color:var(--text-4);">Umbrales: Morosidad ≤5% &bull; Capitalización ≥9% &bull; Liquidez ≥14%</span>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function(){
+  const headers   = document.querySelectorAll('th.sortable');
+  const tbody     = document.getElementById('rankingBody');
+  const searchInp = document.getElementById('searchInput');
+  const segFilter = document.getElementById('segmentoFilter');
+  const countNum  = document.getElementById('countNum');
+  let lastCol = -1, lastAsc = false;
+
+  // Add hover pointer to sortable headers
+  headers.forEach(th => { th.style.cursor = 'pointer'; });
+
+  function renumber(){
+    let n = 0;
+    tbody.querySelectorAll('tr').forEach(r => {
+      const c = r.querySelector('td:first-child span');
+      if (c && r.style.display !== 'none') c.textContent = ++n;
+    });
+  }
+
+  function applyFilters(){
+    const q   = searchInp.value.toLowerCase().trim();
+    const seg = segFilter.value.toLowerCase().trim();
+    let vis = 0;
+    tbody.querySelectorAll('tr:not(#noResultsRow)').forEach(r => {
+      const nm = r.children[1]?.textContent.toLowerCase() || '';
+      const sg = r.children[2]?.textContent.toLowerCase() || '';
+      const ok = (!q || nm.includes(q)) && (!seg || sg.includes(seg));
+      r.style.display = ok ? '' : 'none';
+      if (ok) vis++;
+    });
+    countNum.textContent = vis;
+    document.getElementById('noResultsRow').style.display = vis === 0 ? '' : 'none';
+    renumber();
+  }
+
+  searchInp.addEventListener('input', applyFilters);
+  segFilter.addEventListener('change', applyFilters);
+
+  headers.forEach(th => {
+    th.addEventListener('click', () => {
+      const col   = parseInt(th.dataset.col);
+      const isNum = th.dataset.type === 'num';
+      const asc   = lastCol === col ? !lastAsc : true;
+      lastCol = col; lastAsc = asc;
+
+      document.querySelectorAll('th.sortable .sort-icon').forEach(i => {
+        i.textContent = '⇅'; i.style.color = 'var(--text-4)';
+      });
+      const icon = th.querySelector('.sort-icon');
+      icon.textContent = asc ? '↑' : '↓';
+      icon.style.color = 'var(--indigo)';
+
+      Array.from(tbody.querySelectorAll('tr'))
+        .sort((a,b) => {
+          const av = a.children[col]?.textContent.trim().replace('%','') || '';
+          const bv = b.children[col]?.textContent.trim().replace('%','') || '';
+          if (isNum) {
+            const an = parseFloat(av), bn = parseFloat(bv);
+            if (isNaN(an) && isNaN(bn)) return 0;
+            if (isNaN(an)) return 1;
+            if (isNaN(bn)) return -1;
+            return asc ? an - bn : bn - an;
+          }
+          return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+        })
+        .forEach(r => tbody.appendChild(r));
+      applyFilters();
+    });
+  });
+})();
+</script>
+{% endblock %}

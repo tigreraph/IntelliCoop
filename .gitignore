@@ -1,0 +1,65 @@
+# ============================================================
+# IntelliCoop — .gitignore
+# ============================================================
+
+# --- Datos grandes (no van a GitHub) ---
+SEPS_EEFF.duckdb
+SEPS_EEFF.duckdb.wal
+Base de datos/
+Modelo Avatar/
+boletines/
+
+# --- Live2D: archivos fuente Cubism Editor (>100 MB, no necesarios en servidor) ---
+*.cmo3
+*.can3
+
+# --- Archivos de entorno (secretos) ---
+.env
+.env.local
+.env.production
+*.key
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.egg-info/
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+.Python
+
+# --- Django ---
+seps_web/db.sqlite3
+seps_web/staticfiles/
+seps_web/media/
+*.log
+
+# --- Modelos ML entrenados (se generan localmente, se suben al VPS por SCP) ---
+ml_models/*.pkl
+ml_models/*.joblib
+ml_models/*.h5
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# --- IDE / OS ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Archivos temporales ---
+*.tmp
+*.bak
+tmp/
+temp/

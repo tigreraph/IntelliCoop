@@ -1,0 +1,60 @@
+{
+	"Type": "Live2D Expression",
+	"Parameters": [
+		{
+			"Id": "ParamMouthExpression",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "CheekPuff",
+			"Value": -0.687,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamMouthShrug",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamIrisExpression",
+			"Value": -0.3,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamBrowExpression",
+			"Value": -0.3,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamEyeExpression",
+			"Value": 0.3,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamAngleY",
+			"Value": 14,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamShadow2",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamEyeRSmile",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "ParamEyeLSmile",
+			"Value": 1,
+			"Blend": "Add"
+		}
+	]
+}

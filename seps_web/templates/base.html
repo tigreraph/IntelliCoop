@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}IntelliCoop — Sistema Inteligente de Análisis y Riesgo Cooperativo{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234f46e5'/><text x='50%25' y='54%25' dominant-baseline='central' text-anchor='middle' font-family='Inter,sans-serif' font-weight='800' font-size='15' fill='white'>IC</text></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+  <style>
+    :root {
+      --bg-base:    #f0f4f8;
+      --bg-surface: #e8eef5;
+      --bg-card:    #ffffff;
+      --bg-card2:   #f8fafc;
+      --border:     #e2e8f0;
+      --border-dim: #f1f5f9;
+      --indigo:     #6366f1;
+      --indigo-dim: #6366f118;
+      --green:      #10b981;
+      --red:        #ef4444;
+      --amber:      #f59e0b;
+      --sky:        #0ea5e9;
+      --text-1:     #0f172a;
+      --text-2:     #1e293b;
+      --text-3:     #475569;
+      --text-4:     #94a3b8;
+    }
+
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-base); color: var(--text-1); }
+    .font-data { font-family: 'Fira Code', monospace; font-variant-numeric: tabular-nums; }
+
+    /* ── Animations ──────────────────────────────────── */
+    @keyframes fadeInUp {
+      from { opacity:0; transform:translateY(10px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes pulse-soft {
+      0%,100% { opacity:1; } 50% { opacity:.45; }
+    }
+    @keyframes shimmer {
+      from { background-position: -200% 0; }
+      to   { background-position:  200% 0; }
+    }
+    .fade-in   { animation: fadeInUp .32s cubic-bezier(.16,1,.3,1) both; }
+    .fade-in-1 { animation-delay:.05s; }
+    .fade-in-2 { animation-delay:.10s; }
+    .fade-in-3 { animation-delay:.15s; }
+    .fade-in-4 { animation-delay:.20s; }
+    .fade-in-5 { animation-delay:.25s; }
+
+    /* Skeleton loader */
+    .skeleton {
+      background: linear-gradient(90deg, #f1f5f9 25%, #e8eef5 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s ease-in-out infinite;
+      border-radius: 6px; display: block;
+    }
+
+    /* Respeta preferencia del sistema: sin animaciones */
+    @media (prefers-reduced-motion: reduce) {
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ── Sidebar ─────────────────────────────────────── */
+    .sidebar {
+      background: linear-gradient(180deg, #4f46e5 0%, #312e81 100%);
+      border-right: none;
+      box-shadow: 4px 0 20px rgba(79,70,229,.18);
+    }
+    .sidebar-brand {
+      background: transparent;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+
+    .nav-item {
+      display:flex; align-items:center; gap:10px;
+      padding:8px 12px; border-radius:9px;
+      color: rgba(255,255,255,.72); font-size:13px; font-weight:500;
+      transition:all .18s cubic-bezier(.16,1,.3,1);
+      text-decoration:none; margin-bottom:2px;
+      position:relative;
+    }
+    .nav-item i { font-size:16px; color: rgba(255,255,255,.45); transition:color .18s; flex-shrink:0; }
+    .nav-item:hover {
+      background: rgba(255,255,255,.1);
+      color: rgba(255,255,255,.96);
+    }
+    .nav-item:hover i { color: rgba(255,255,255,.75); }
+    .nav-item.active {
+      background: rgba(255,255,255,.16);
+      color: #fff;
+      font-weight:600;
+    }
+    .nav-item.active::before {
+      content:'';
+      position:absolute; left:0; top:20%; bottom:20%;
+      width:3px; border-radius:0 3px 3px 0;
+      background: #c7d2fe;
+    }
+    .nav-item.active i { color: #c7d2fe; }
+
+    .nav-rakkun {
+      display:flex; align-items:center; gap:10px;
+      padding:9px 12px; border-radius:9px;
+      background: rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.2);
+      color: rgba(255,255,255,.9); font-size:13px; font-weight:600;
+      text-decoration:none; transition:all .18s cubic-bezier(.16,1,.3,1);
+      margin-bottom:2px; position:relative;
+    }
+    .nav-rakkun:hover { background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.3); }
+    .nav-rakkun.active { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.4); }
+    .nav-rakkun i { font-size:16px; color: #c7d2fe; }
+
+    .section-label {
+      font-size:9px; color: rgba(255,255,255,.4);
+      text-transform:uppercase; letter-spacing:.1em;
+      font-weight:600; padding:0 12px; margin-bottom:6px; margin-top:20px;
+    }
+    .section-label:first-child { margin-top:0; }
+
+    /* Sidebar stats */
+    .sidebar-stat {
+      display:flex; justify-content:space-between; align-items:center;
+    }
+    .sidebar-stat-label { font-size:10px; color: rgba(255,255,255,.5); }
+    .sidebar-stat-val   { font-size:11px; font-weight:600; color: rgba(255,255,255,.9); font-family:'Fira Code',monospace; }
+
+    /* ── Cards ───────────────────────────────────────── */
+    .ic-card {
+      background: var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:14px; padding:1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 1px 2px rgba(0,0,0,.04);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .ic-card:hover {
+      border-color: rgba(99,102,241,.22);
+      box-shadow: 0 6px 24px rgba(99,102,241,.09), 0 2px 8px rgba(0,0,0,.05);
+    }
+    .ic-card-sm {
+      background: var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:12px; padding:1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    }
+
+    /* ── KPI cards ───────────────────────────────────── */
+    .kpi-card {
+      background: var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:14px; padding:1.15rem;
+      position:relative; overflow:hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,.05);
+      cursor: pointer;
+      transition: border-color .2s, transform .18s cubic-bezier(.16,1,.3,1), box-shadow .2s;
+    }
+    .kpi-card:hover {
+      border-color: rgba(99,102,241,.22);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(99,102,241,.1), 0 2px 8px rgba(0,0,0,.06);
+    }
+    .kpi-card:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+    .kpi-accent { position:absolute; top:0; left:0; right:0; height:3px; border-radius:14px 14px 0 0; }
+    .kpi-glow {
+      position:absolute; top:-30px; right:-30px;
+      width:90px; height:90px; border-radius:50%;
+      opacity:0.04; filter:blur(28px); pointer-events:none;
+    }
+
+    /* ── Badges ──────────────────────────────────────── */
+    .badge { display:inline-flex; align-items:center; gap:3px; padding:2px 9px; border-radius:20px; font-size:11px; font-weight:600; white-space:nowrap; letter-spacing:.01em; }
+    .badge-excellent { background:#d1fae5; color:#065f46; border:1px solid #a7f3d0; }
+    .badge-good      { background:#ecfccb; color:#365314; border:1px solid #bef264; }
+    .badge-regular   { background:#fef3c7; color:#92400e; border:1px solid #fde68a; }
+    .badge-deficient { background:#ffedd5; color:#9a3412; border:1px solid #fdba74; }
+    .badge-critical  { background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
+
+    /* ── Table ───────────────────────────────────────── */
+    .ic-table { width:100%; border-collapse:collapse; }
+    .ic-table thead th {
+      background: #f8fafc;
+      color: var(--text-3);
+      font-size:11px; font-weight:600;
+      text-transform:uppercase; letter-spacing:.07em;
+      padding:11px 16px;
+      position:sticky; top:0; z-index:1;
+      border-bottom:1px solid var(--border);
+    }
+    .ic-table tbody td {
+      padding:11px 16px; font-size:13px;
+      color: var(--text-2);
+      border-bottom:1px solid var(--border-dim);
+      transition:background .1s, color .1s;
+    }
+    .ic-table tbody tr { transition:background .1s; cursor:pointer; }
+    .ic-table tbody tr:hover td {
+      background: #f8fafc;
+      color: var(--text-1);
+    }
+    .ic-table tbody tr:last-child td { border-bottom:none; }
+
+    /* ── Topbar ──────────────────────────────────────── */
+    .topbar {
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom:1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+    }
+
+    /* ── Toast ───────────────────────────────────────── */
+    #toast {
+      position:fixed; bottom:1.5rem; right:1.5rem; z-index:9999;
+      display:flex; align-items:center; gap:.5rem;
+      background: #fff; border:1px solid #fca5a5;
+      color:#dc2626; padding:.75rem 1.25rem; border-radius:.875rem;
+      font-size:.8rem; box-shadow:0 8px 24px rgba(0,0,0,.1);
+      transform:translateY(80px); opacity:0;
+      transition:transform .3s cubic-bezier(.16,1,.3,1), opacity .3s;
+    }
+    #toast.show { transform:translateY(0); opacity:1; }
+
+    /* ── Scrollbar ───────────────────────────────────── */
+    ::-webkit-scrollbar { width:4px; height:4px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius:4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* ── Inputs ──────────────────────────────────────── */
+    .ic-input, .ic-select {
+      background: #fff;
+      border:1px solid var(--border);
+      color: var(--text-1); border-radius:9px; padding:8px 12px;
+      font-size:13px; font-family:'Inter',sans-serif;
+      transition:border-color .15s, box-shadow .15s; outline:none;
+    }
+    .ic-input::placeholder { color: var(--text-4); }
+    .ic-input:focus, .ic-select:focus {
+      border-color: #6366f1;
+      box-shadow:0 0 0 3px rgba(99,102,241,.12);
+    }
+    .ic-select option { background: #fff; color: var(--text-1); }
+
+    /* ── Live dot ────────────────────────────────────── */
+    .live-dot {
+      width:6px; height:6px; border-radius:50%; background:#10b981;
+      animation:pulse-soft 2s ease-in-out infinite; flex-shrink:0;
+    }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+<div class="flex min-h-screen">
+
+  <!-- ─── Sidebar ──────────────────────────────────────────── -->
+  <aside class="sidebar fixed top-0 left-0 h-screen w-60 flex flex-col z-50 overflow-y-auto flex-shrink-0">
+
+    <!-- Branding -->
+    <div class="sidebar-brand p-5 flex-shrink-0">
+      <a href="/" class="flex items-center gap-3 group">
+        <div style="width:38px;height:38px;border-radius:11px;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#4f46e5;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.2);">IC</div>
+        <div>
+          <p style="font-size:14px;font-weight:700;color:#fff;line-height:1.2;">IntelliCoop</p>
+          <p style="font-size:9.5px;color:rgba(255,255,255,.55);line-height:1.5;margin-top:2px;">Sistema de Análisis<br>y Riesgo Cooperativo</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex-1 p-3">
+      <p class="section-label">Análisis</p>
+      <a href="/" data-path="/" class="nav-item">
+        <i class="ti ti-layout-dashboard"></i>Dashboard
+      </a>
+      <a href="/ranking/" data-path="/ranking/" class="nav-item">
+        <i class="ti ti-trophy"></i>Ranking CAMEL
+      </a>
+      <a href="/segmentos/" data-path="/segmentos/" class="nav-item">
+        <i class="ti ti-chart-bar"></i>Segmentos
+      <a href="/prediccion/" data-path="/prediccion/" class="nav-item">
+        <i class="ti ti-brain"></i>Predicción
+      </a>
+      <p class="section-label">Asistente IA</p>
+      <a href="/rakkun/" data-path="/rakkun/" class="nav-rakkun">
+        <i class="ti ti-message-chatbot"></i>Chat Rakkun
+        <span style="margin-left:auto;font-size:9px;background:rgba(199,210,254,.2);color:#c7d2fe;padding:2px 7px;border-radius:20px;font-weight:700;letter-spacing:.04em;">AI</span>
+      </a>
+      <a href="/rakkun-avatar/" data-path="/rakkun-avatar/" class="nav-rakkun" style="margin-top:4px;">
+        <i class="ti ti-mood-smile"></i>Rakkun Avatar
+        <span style="margin-left:auto;font-size:9px;background:rgba(199,210,254,.2);color:#c7d2fe;padding:2px 7px;border-radius:20px;font-weight:700;letter-spacing:.04em;">VTuber</span>
+      </a>
+    </nav>
+
+    <!-- Stats footer -->
+    <div style="padding:14px 16px;border-top:1px solid rgba(255,255,255,.1);flex-shrink:0;display:flex;flex-direction:column;gap:9px;">
+      <div class="sidebar-stat">
+        <span class="sidebar-stat-label">Cooperativas activas</span>
+        <span class="sidebar-stat-val">{{ sidebar_coops }}</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="sidebar-stat-label">Último corte</span>
+        <span class="sidebar-stat-val">{{ sidebar_corte }}</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="sidebar-stat-label">Activos sistema</span>
+        <span class="sidebar-stat-val">{{ sidebar_activos }}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding-top:8px;border-top:1px solid rgba(255,255,255,.1);">
+        <span class="live-dot"></span>
+        <span style="font-size:10px;color:#6ee7b7;font-weight:500;">VPS conectado</span>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ─── Main wrapper ─────────────────────────────────────── -->
+  <div class="ml-60 flex-1 flex flex-col min-h-screen overflow-x-hidden">
+
+    <!-- Topbar -->
+    <header class="topbar sticky top-0 z-40 px-6 py-3.5 flex items-center justify-between flex-shrink-0">
+      <div>
+        <h1 style="font-size:13.5px;font-weight:700;color:var(--text-1);letter-spacing:-.01em;">{% block page_title %}IntelliCoop{% endblock %}</h1>
+        <p style="font-size:11px;color:var(--text-3);margin-top:1px;">{% block page_subtitle %}&nbsp;{% endblock %}</p>
+      </div>
+      <div class="flex items-center gap-3">
+        {% block topbar_actions %}{% endblock %}
+        <span style="font-size:11px;color:var(--text-3);background:var(--border-dim);padding:4px 12px;border-radius:20px;border:1px solid var(--border);">Fuente: SEPS Ecuador</span>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="flex-1 px-6 py-6 max-w-screen-xl w-full mx-auto overflow-x-hidden">
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer style="padding:12px 24px;border-top:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <span style="font-size:10.5px;color:var(--text-4);">IntelliCoop &mdash; Sistema Inteligente de Análisis y Riesgo Cooperativo</span>
+      <span style="font-size:10.5px;color:var(--text-4);">Proyecto de Titulación &mdash; Jonnathan Tigre</span>
+    </footer>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0;"></i><span>Sin conexión con el servicio</span></div>
+
+<script>
+  (function(){
+    const p = window.location.pathname;
+    document.querySelectorAll('[data-path]').forEach(a => {
+      const ap = a.dataset.path;
+      if (ap === '/' ? p === '/' : p.startsWith(ap)) a.classList.add('active');
+    });
+  })();
+
+  window.showToast = function(msg, ms=4500){
+    const t = document.getElementById('toast');
+    t.querySelector('span').textContent = msg || 'Error de conexión';
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), ms);
+  };
+</script>
+
+{% block scripts %}{% endblock %}
+</body>
+</html>

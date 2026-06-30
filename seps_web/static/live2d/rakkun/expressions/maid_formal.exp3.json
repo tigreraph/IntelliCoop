@@ -1,0 +1,13 @@
+{
+	"Type": "Live2D Expression",
+	"Parameters": [
+		{ "Id": "ParamMaid",          "Value": 1.0, "Blend": "Add" },
+		{ "Id": "ParamJacketOff",     "Value": 1.0, "Blend": "Add" },
+		{ "Id": "ParamNormalClothes", "Value": 1.0, "Blend": "Add" },
+		{ "Id": "ParamEarOff",        "Value": 1.0, "Blend": "Add" },
+		{ "Id": "ParamTailOnOff",     "Value": 1.0, "Blend": "Add" },
+		{ "Id": "ParamCapOnOff",      "Value": 0.0, "Blend": "Override" },
+		{ "Id": "ParamMaskOnOff",     "Value": 0.0, "Blend": "Override" },
+		{ "Id": "ParamMaskChage",     "Value": 0.0, "Blend": "Override" }
+	]
+}

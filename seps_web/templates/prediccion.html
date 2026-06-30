@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Predicción — IntelliCoop{% endblock %}
+
+{% block content %}
+<div style="padding:28px 32px;max-width:1300px;margin:0 auto;">
+
+  <!-- Header -->
+  <div style="margin-bottom:28px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+      <i class="ti ti-brain" style="font-size:22px;color:var(--accent);"></i>
+      <h1 style="font-size:22px;font-weight:700;color:var(--text-1);margin:0;">Módulo de Predicción</h1>
+      <span style="background:rgba(129,140,248,.15);color:var(--accent);font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid rgba(129,140,248,.3);letter-spacing:.5px;">EN DESARROLLO</span>
+    </div>
+    <p style="color:var(--text-3);font-size:13px;margin:0;">Modelos de machine learning para anticipar el comportamiento financiero de las cooperativas supervisadas por SEPS.</p>
+  </div>
+
+  <!-- KPI cards placeholder -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;">
+    {% for item in placeholder_kpis %}
+    <div style="background:var(--bg-card);border:1px solid var(--border-dim);border-radius:14px;padding:20px 22px;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(129,140,248,.03) 8px,rgba(129,140,248,.03) 16px);"></div>
+      <p style="font-size:11px;color:var(--text-4);margin:0 0 10px;text-transform:uppercase;letter-spacing:.6px;">{{ item.label }}</p>
+      <div style="height:28px;width:70%;background:var(--border-dim);border-radius:6px;animation:pulse 1.8s ease-in-out infinite;"></div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Modelos disponibles -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px;">
+
+    <!-- Modelo 1: Morosidad -->
+    <div style="background:var(--bg-card);border:1px solid var(--border-dim);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.25);display:flex;align-items:center;justify-content:center;">
+          <i class="ti ti-trending-up" style="font-size:18px;color:#fbbf24;"></i>
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:600;color:var(--text-1);margin:0;">Predicción de Morosidad</p>
+          <p style="font-size:11px;color:var(--text-4);margin:0;">Regresión · Horizonte 3 meses</p>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--text-3);margin:0;line-height:1.6;">Anticipa el índice de morosidad de cartera usando indicadores financieros históricos (liquidez, capitalización, cobertura) como variables predictoras.</p>
+      <div style="margin-top:auto;">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-4);margin-bottom:6px;">
+          <span>Progreso de implementación</span><span>0%</span>
+        </div>
+        <div style="height:5px;background:var(--border-dim);border-radius:99px;">
+          <div style="height:100%;width:0%;background:#fbbf24;border-radius:99px;"></div>
+        </div>
+      </div>
+      <button disabled style="width:100%;padding:9px;border-radius:9px;background:var(--border-dim);border:none;color:var(--text-4);font-size:12px;cursor:not-allowed;">Próximamente</button>
+    </div>
+
+    <!-- Modelo 2: Clustering de riesgo -->
+    <div style="background:var(--bg-card);border:1px solid var(--border-dim);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(129,140,248,.12);border:1px solid rgba(129,140,248,.25);display:flex;align-items:center;justify-content:center;">
+          <i class="ti ti-topology-star" style="font-size:18px;color:var(--accent);"></i>
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:600;color:var(--text-1);margin:0;">Clustering de Riesgo</p>
+          <p style="font-size:11px;color:var(--text-4);margin:0;">K-Means + PCA · Segmento 1</p>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--text-3);margin:0;line-height:1.6;">Agrupa cooperativas por perfil de riesgo financiero usando componentes principales derivados de los ratios CAMEL. Identifica clusters de alta vulnerabilidad.</p>
+      <div style="margin-top:auto;">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-4);margin-bottom:6px;">
+          <span>Progreso de implementación</span><span>0%</span>
+        </div>
+        <div style="height:5px;background:var(--border-dim);border-radius:99px;">
+          <div style="height:100%;width:0%;background:var(--accent);border-radius:99px;"></div>
+        </div>
+      </div>
+      <button disabled style="width:100%;padding:9px;border-radius:9px;background:var(--border-dim);border:none;color:var(--text-4);font-size:12px;cursor:not-allowed;">Próximamente</button>
+    </div>
+
+    <!-- Modelo 3: Alerta temprana -->
+    <div style="background:var(--bg-card);border:1px solid var(--border-dim);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.25);display:flex;align-items:center;justify-content:center;">
+          <i class="ti ti-alert-triangle" style="font-size:18px;color:#f87171;"></i>
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:600;color:var(--text-1);margin:0;">Alerta Temprana</p>
+          <p style="font-size:11px;color:var(--text-4);margin:0;">Clasificación · Random Forest</p>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--text-3);margin:0;line-height:1.6;">Modelo de clasificación binaria que señala cooperativas en riesgo de deterioro crítico en los próximos 6 meses, basado en tendencias de los ratios CAMEL.</p>
+      <div style="margin-top:auto;">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-4);margin-bottom:6px;">
+          <span>Progreso de implementación</span><span>0%</span>
+        </div>
+        <div style="height:5px;background:var(--border-dim);border-radius:99px;">
+          <div style="height:100%;width:0%;background:#f87171;border-radius:99px;"></div>
+        </div>
+      </div>
+      <button disabled style="width:100%;padding:9px;border-radius:9px;background:var(--border-dim);border:none;color:var(--text-4);font-size:12px;cursor:not-allowed;">Próximamente</button>
+    </div>
+
+  </div>
+
+  <!-- Área de gráficos placeholder -->
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:18px;">
+
+    <!-- Gráfico principal placeholder -->
+    <div style="background:var(--bg-card);border:1px solid var(--border-dim);border-radius:14px;padding:24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div>
+          <p style="font-size:14px;font-weight:600;color:var(--text-1);margin:0 0 3px;">Proyección de Indicadores</p>
+          <p style="font-size:11px;color:var(--text-4);margin:0;">Series temporales · Holt-Winters / ARIMA</p>
+        </div>
+        <span style="background:rgba(129,140,248,.1);color:var(--text-4);font-size:10px;padding:4px 10px;border-radius:20px;border:1px solid var(--border-dim);">Pendiente</span>
+      </div>
+      <!-- Gráfico skeleton -->
+      <div style="height:220px;display:flex;align-items:flex-end;gap:6px;padding:0 8px;">
+        {% for h in bar_heights %}
+        <div style="flex:1;background:var(--border-dim);border-radius:4px 4px 0 0;height:{{ h }}%;animation:pulse 1.8s ease-in-out infinite;animation-delay:{{ forloop.counter0 }}00ms;"></div>
+        {% endfor %}
+      </div>
+      <div style="display:flex;justify-content:space-around;margin-top:8px;">
+        {% for m in meses_short %}
+        <span style="font-size:10px;color:var(--text-4);">{{ m }}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Panel lateral placeholder -->
+    <div style="background:var(--bg-card);border:1px solid var(--border-dim);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+      <div>
+        <p style="font-size:14px;font-weight:600;color:var(--text-1);margin:0 0 3px;">Variables Predictoras</p>
+        <p style="font-size:11px;color:var(--text-4);margin:0;">Importancia de features</p>
+      </div>
+      {% for feat in features %}
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+          <span style="font-size:11px;color:var(--text-3);">{{ feat.nombre }}</span>
+          <span style="font-size:11px;color:var(--text-4);">—</span>
+        </div>
+        <div style="height:5px;background:var(--border-dim);border-radius:99px;">
+          <div style="height:100%;width:0%;background:var(--accent);border-radius:99px;transition:width 1s;"></div>
+        </div>
+      </div>
+      {% endfor %}
+      <p style="font-size:11px;color:var(--text-4);margin-top:auto;text-align:center;line-height:1.6;">Disponible cuando el modelo esté entrenado</p>
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .4; }
+}
+</style>
+{% endblock %}

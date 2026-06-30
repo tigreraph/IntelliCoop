@@ -1,0 +1,143 @@
+{
+	"Version": 3,
+	"Meta": {
+		"Duration": 1.167,
+		"Fps": 30.0,
+		"Loop": true,
+		"AreBeziersRestricted": true,
+		"CurveCount": 8,
+		"TotalSegmentCount": 17,
+		"TotalPointCount": 31,
+		"UserDataCount": 0,
+		"TotalUserDataSize": 0
+	},
+	"Curves": [
+		{
+			"Target": "Parameter",
+			"Id": "ParamExpArmR",
+			"Segments": [
+				0,
+				0,
+				0,
+				0.333,
+				0,
+				1,
+				0.444,
+				0,
+				0.556,
+				1,
+				0.667,
+				1,
+				0,
+				1.167,
+				1
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "ParamArtHand",
+			"Segments": [
+				0,
+				0,
+				0,
+				0.333,
+				0,
+				1,
+				0.5,
+				0,
+				0.667,
+				1,
+				0.833,
+				1,
+				0,
+				1.167,
+				1
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "ParamArtHandOnOff",
+			"Segments": [
+				0,
+				0,
+				0,
+				0.333,
+				0,
+				2,
+				0.433,
+				0,
+				2,
+				0.467,
+				1,
+				0,
+				1.167,
+				1
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "ParamSingHand",
+			"Segments": [
+				0,
+				0,
+				0,
+				1.167,
+				0
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "ParamSingHandOnOff",
+			"Segments": [
+				0,
+				0,
+				0,
+				1.167,
+				0
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "ParamGamingArms1",
+			"Segments": [
+				0,
+				0,
+				0,
+				1.167,
+				0
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "ParamGamingArmsOnOff",
+			"Segments": [
+				0,
+				0,
+				0,
+				1.167,
+				0
+			]
+		},
+		{
+			"Target": "Parameter",
+			"Id": "ParamArmPhyOnOff",
+			"Segments": [
+				0,
+				0,
+				0,
+				0.333,
+				0,
+				1,
+				0.356,
+				0,
+				0.378,
+				1,
+				0.4,
+				1,
+				0,
+				1.167,
+				1
+			]
+		}
+	]
+}

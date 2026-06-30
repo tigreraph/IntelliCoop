@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% block title %}Segmentos — IntelliCoop{% endblock %}
+{% block head %}<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>{% endblock %}
+
+{% block page_title %}Comparativo por Segmento{% endblock %}
+{% block page_subtitle %}Análisis financiero — Segmentos 1, 2, 3 y Mutualistas{% endblock %}
+
+{% block content %}
+
+{% with seg_colors='#818cf8,#34d399,#fbbf24,#f87171' %}
+
+<!-- Cards por segmento -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 fade-in">
+  {% for seg in segmentos %}
+  {% if forloop.counter == 1 %}{% with sc="#818cf8" sb="rgba(129,140,248,.12)" sbr="rgba(129,140,248,.25)" %}
+  <div class="ic-card" style="border-top:2px solid {{ sc }};">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <h3 style="font-size:13px;font-weight:600;color:var(--text-1);">{{ seg.segmento }}</h3>
+        <p style="font-size:11px;color:var(--text-4);margin-top:2px;">{{ seg.total }} cooperativas</p>
+      </div>
+      <div style="width:36px;height:36px;border-radius:50%;background:{{ sb }};border:1px solid {{ sbr }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;color:{{ sc }};font-family:'Fira Code',monospace;">{{ forloop.counter }}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">CAMEL prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{{ sc }};">{{ seg.camel_promedio }}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">Morosidad prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{% if seg.morosidad_promedio <= 5 %}#34d399{% else %}#f87171{% endif %};">{{ seg.morosidad_promedio }}%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">Liquidez prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{% if seg.liquidez_promedio >= 14 %}#34d399{% else %}#f87171{% endif %};">{{ seg.liquidez_promedio }}%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--border-dim);">
+        <span style="font-size:11px;color:var(--text-3);">Activos totales</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:var(--text-1);">{{ seg.activos_miles_millones }}B</span>
+      </div>
+    </div>
+  </div>
+  {% endwith %}
+  {% elif forloop.counter == 2 %}{% with sc="#34d399" sb="rgba(52,211,153,.12)" sbr="rgba(52,211,153,.25)" %}
+  <div class="ic-card" style="border-top:2px solid {{ sc }};">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <h3 style="font-size:13px;font-weight:600;color:var(--text-1);">{{ seg.segmento }}</h3>
+        <p style="font-size:11px;color:var(--text-4);margin-top:2px;">{{ seg.total }} cooperativas</p>
+      </div>
+      <div style="width:36px;height:36px;border-radius:50%;background:{{ sb }};border:1px solid {{ sbr }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;color:{{ sc }};font-family:'Fira Code',monospace;">{{ forloop.counter }}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">CAMEL prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{{ sc }};">{{ seg.camel_promedio }}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">Morosidad prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{% if seg.morosidad_promedio <= 5 %}#34d399{% else %}#f87171{% endif %};">{{ seg.morosidad_promedio }}%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">Liquidez prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{% if seg.liquidez_promedio >= 14 %}#34d399{% else %}#f87171{% endif %};">{{ seg.liquidez_promedio }}%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--border-dim);">
+        <span style="font-size:11px;color:var(--text-3);">Activos totales</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:var(--text-1);">{{ seg.activos_miles_millones }}B</span>
+      </div>
+    </div>
+  </div>
+  {% endwith %}
+  {% elif forloop.counter == 3 %}{% with sc="#fbbf24" sb="rgba(251,191,36,.12)" sbr="rgba(251,191,36,.25)" %}
+  <div class="ic-card" style="border-top:2px solid {{ sc }};">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <h3 style="font-size:13px;font-weight:600;color:var(--text-1);">{{ seg.segmento }}</h3>
+        <p style="font-size:11px;color:var(--text-4);margin-top:2px;">{{ seg.total }} cooperativas</p>
+      </div>
+      <div style="width:36px;height:36px;border-radius:50%;background:{{ sb }};border:1px solid {{ sbr }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;color:{{ sc }};font-family:'Fira Code',monospace;">{{ forloop.counter }}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">CAMEL prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{{ sc }};">{{ seg.camel_promedio }}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">Morosidad prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{% if seg.morosidad_promedio <= 5 %}#34d399{% else %}#f87171{% endif %};">{{ seg.morosidad_promedio }}%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">Liquidez prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{% if seg.liquidez_promedio >= 14 %}#34d399{% else %}#f87171{% endif %};">{{ seg.liquidez_promedio }}%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--border-dim);">
+        <span style="font-size:11px;color:var(--text-3);">Activos totales</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:var(--text-1);">{{ seg.activos_miles_millones }}B</span>
+      </div>
+    </div>
+  </div>
+  {% endwith %}
+  {% else %}{% with sc="#f87171" sb="rgba(248,113,113,.12)" sbr="rgba(248,113,113,.25)" %}
+  <div class="ic-card" style="border-top:2px solid {{ sc }};">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <h3 style="font-size:13px;font-weight:600;color:var(--text-1);">{{ seg.segmento }}</h3>
+        <p style="font-size:11px;color:var(--text-4);margin-top:2px;">{{ seg.total }} cooperativas</p>
+      </div>
+      <div style="width:36px;height:36px;border-radius:50%;background:{{ sb }};border:1px solid {{ sbr }};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;font-weight:700;color:{{ sc }};font-family:'Fira Code',monospace;">{{ forloop.counter }}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">CAMEL prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{{ sc }};">{{ seg.camel_promedio }}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">Morosidad prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{% if seg.morosidad_promedio <= 5 %}#34d399{% else %}#f87171{% endif %};">{{ seg.morosidad_promedio }}%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:var(--text-3);">Liquidez prom.</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:{% if seg.liquidez_promedio >= 14 %}#34d399{% else %}#f87171{% endif %};">{{ seg.liquidez_promedio }}%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--border-dim);">
+        <span style="font-size:11px;color:var(--text-3);">Activos totales</span>
+        <span class="font-data" style="font-size:13px;font-weight:600;color:var(--text-1);">{{ seg.activos_miles_millones }}B</span>
+      </div>
+    </div>
+  </div>
+  {% endwith %}
+  {% endif %}
+  {% endfor %}
+</div>
+{% endwith %}
+
+<!-- Gráficos fila 1 -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5 fade-in fade-in-2">
+  <div class="ic-card">
+    <h2 style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:2px;">CAMEL Score promedio</h2>
+    <p style="font-size:11px;color:var(--text-3);margin-bottom:16px;">Score compuesto 0–100 por segmento</p>
+    <canvas id="chartCamel" height="200"></canvas>
+  </div>
+  <div class="ic-card">
+    <h2 style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:2px;">Morosidad promedio</h2>
+    <p style="font-size:11px;color:var(--text-3);margin-bottom:16px;">% cartera morosa &bull; <span style="color:#fbbf24;">umbral SEPS = 5%</span></p>
+    <canvas id="chartMorosidad" height="200"></canvas>
+  </div>
+</div>
+
+<!-- Gráficos fila 2 -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6 fade-in fade-in-3">
+  <div class="ic-card">
+    <h2 style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:2px;">Liquidez ampliada promedio</h2>
+    <p style="font-size:11px;color:var(--text-3);margin-bottom:16px;">% liquidez &bull; <span style="color:#fbbf24;">umbral SEPS = 14%</span></p>
+    <canvas id="chartLiquidez" height="200"></canvas>
+  </div>
+  <div class="ic-card">
+    <h2 style="font-size:14px;font-weight:600;color:var(--text-1);margin-bottom:2px;">Capitalización promedio</h2>
+    <p style="font-size:11px;color:var(--text-3);margin-bottom:16px;">Patrimonio/Activo &bull; <span style="color:#fbbf24;">umbral SEPS = 9%</span></p>
+    <canvas id="chartCapital" height="200"></canvas>
+  </div>
+</div>
+
+<!-- Tabla comparativa -->
+<div class="ic-card fade-in fade-in-4" style="padding:0;overflow:hidden;">
+  <div style="padding:16px 20px;border-bottom:1px solid var(--border-dim);">
+    <h2 style="font-size:14px;font-weight:600;color:var(--text-1);">Tabla comparativa</h2>
+    <p style="font-size:11px;color:var(--text-3);margin-top:2px;">Todos los indicadores · último corte disponible</p>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="ic-table">
+      <thead>
+        <tr>
+          <th style="text-align:left;">Segmento</th>
+          <th style="text-align:right;">Coops</th>
+          <th style="text-align:right;">CAMEL</th>
+          <th style="text-align:right;">Morosidad</th>
+          <th style="text-align:right;">Capital</th>
+          <th style="text-align:right;">Liquidez</th>
+          <th style="text-align:right;">ROA</th>
+          <th style="text-align:right;">Activos</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for seg in segmentos %}
+        <tr>
+          <td style="font-weight:500;color:var(--text-1);">
+            <div style="display:flex;align-items:center;gap:8px;">
+              {% if forloop.counter == 1 %}<div style="width:8px;height:8px;border-radius:50%;background:#818cf8;flex-shrink:0;"></div>
+              {% elif forloop.counter == 2 %}<div style="width:8px;height:8px;border-radius:50%;background:#34d399;flex-shrink:0;"></div>
+              {% elif forloop.counter == 3 %}<div style="width:8px;height:8px;border-radius:50%;background:#fbbf24;flex-shrink:0;"></div>
+              {% else %}<div style="width:8px;height:8px;border-radius:50%;background:#f87171;flex-shrink:0;"></div>{% endif %}
+              {{ seg.segmento }}
+            </div>
+          </td>
+          <td class="font-data" style="text-align:right;color:var(--text-2);">{{ seg.total }}</td>
+          <td class="font-data" style="text-align:right;font-weight:600;">
+            {% if seg.camel_promedio >= 60 %}<span style="color:#34d399;">{{ seg.camel_promedio }}</span>
+            {% elif seg.camel_promedio >= 40 %}<span style="color:#fbbf24;">{{ seg.camel_promedio }}</span>
+            {% else %}<span style="color:#f87171;">{{ seg.camel_promedio }}</span>{% endif %}
+          </td>
+          <td class="font-data" style="text-align:right;">{% if seg.morosidad_promedio <= 5 %}<span style="color:#34d399;">{% else %}<span style="color:#f87171;">{% endif %}{{ seg.morosidad_promedio }}%</span></td>
+          <td class="font-data" style="text-align:right;">{% if seg.capital_promedio >= 9 %}<span style="color:#34d399;">{% else %}<span style="color:#f87171;">{% endif %}{{ seg.capital_promedio }}%</span></td>
+          <td class="font-data" style="text-align:right;">{% if seg.liquidez_promedio >= 14 %}<span style="color:#34d399;">{% else %}<span style="color:#f87171;">{% endif %}{{ seg.liquidez_promedio }}%</span></td>
+          <td class="font-data" style="text-align:right;">{% if seg.roa_promedio >= 0 %}<span style="color:#34d399;">{% else %}<span style="color:#f87171;">{% endif %}{{ seg.roa_promedio }}%</span></td>
+          <td class="font-data" style="text-align:right;color:var(--text-2);font-weight:500;">{{ seg.activos_miles_millones }}B</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div style="padding:10px 20px;border-top:1px solid var(--border-dim);font-size:11px;color:var(--text-4);">
+    <span style="color:#34d399;font-weight:500;">Verde</span> = cumple umbral &nbsp;&bull;&nbsp;
+    <span style="color:#f87171;font-weight:500;">Rojo</span> = fuera de umbral &nbsp;&bull;&nbsp;
+    Umbrales: Morosidad ≤5% · Capital ≥9% · Liquidez ≥14%
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+const segs   = {{ segmentos_json|safe }};
+const labels = segs.map(s => s.segmento.replace('Segmento 1 Mutualista','Mutualista').replace('Segmento ','Seg. '));
+const COLORS  = ['#818cf8','#34d399','#fbbf24','#f87171'];
+const SCALE   = { grid:{ color:'rgba(226,232,240,.9)' }, ticks:{ color:'#64748b', font:{size:11} } };
+const BASE_OPTS = {
+  responsive:true,
+  plugins:{ legend:{ display:false }, tooltip:{
+    backgroundColor:'#ffffff', borderColor:'#e2e8f0', borderWidth:1,
+    titleColor:'#0f172a', bodyColor:'#64748b', padding:10
+  }},
+  scales:{
+    y:{ ...SCALE, beginAtZero:true },
+    x:{ grid:{ display:false }, ticks:{ color:'#64748b', font:{size:11} } }
+  },
+  animation:{ duration:700, easing:'easeOutQuart' }
+};
+
+new Chart(document.getElementById('chartCamel'),{
+  type:'bar',
+  data:{ labels, datasets:[{ data:segs.map(s=>s.camel_promedio), backgroundColor:COLORS, borderRadius:8, borderSkipped:false }]},
+  options:{ ...BASE_OPTS, scales:{ ...BASE_OPTS.scales, y:{ ...SCALE, beginAtZero:true, max:100 } } }
+});
+new Chart(document.getElementById('chartMorosidad'),{
+  type:'bar',
+  data:{ labels, datasets:[{ data:segs.map(s=>s.morosidad_promedio), backgroundColor:segs.map(s=>s.morosidad_promedio<=5?'#34d399':'#f87171'), borderRadius:8, borderSkipped:false }]},
+  options:BASE_OPTS
+});
+new Chart(document.getElementById('chartLiquidez'),{
+  type:'bar',
+  data:{ labels, datasets:[{ data:segs.map(s=>s.liquidez_promedio), backgroundColor:segs.map(s=>s.liquidez_promedio>=14?'#34d399':'#f87171'), borderRadius:8, borderSkipped:false }]},
+  options:BASE_OPTS
+});
+new Chart(document.getElementById('chartCapital'),{
+  type:'bar',
+  data:{ labels, datasets:[{ data:segs.map(s=>s.capital_promedio), backgroundColor:segs.map(s=>s.capital_promedio>=9?'#34d399':'#f87171'), borderRadius:8, borderSkipped:false }]},
+  options:BASE_OPTS
+});
+</script>
+{% endblock %}

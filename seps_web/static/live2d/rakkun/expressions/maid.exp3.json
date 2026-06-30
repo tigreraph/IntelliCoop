@@ -1,0 +1,25 @@
+{
+    "Type": "Live2D Expression",
+    "Parameters": [
+        {
+            "Id": "ParamMaid",
+            "Value": 1.0,
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamJacketOff",
+            "Value": 1.0,
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamCapOnOff",
+            "Value": 1.0,
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamNormalClothes",
+            "Value": 1.0,
+            "Blend": "Add"
+        }
+    ]
+}

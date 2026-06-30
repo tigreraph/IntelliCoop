@@ -1,0 +1,37 @@
+# ─────────────────────────────────────────────────────────────
+# Systemd service — IntelliCoop (Gunicorn)
+# Copiar a: /etc/systemd/system/gunicorn.service
+# Luego:
+#   systemctl daemon-reload
+#   systemctl enable gunicorn
+#   systemctl start gunicorn
+# ─────────────────────────────────────────────────────────────
+
+[Unit]
+Description=IntelliCoop — Gunicorn WSGI
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/var/www/seps_web
+
+# Variables de entorno de producción
+Environment="DEBUG=False"
+Environment="SECRET_KEY=cambia-esto-por-una-clave-segura"
+Environment="ALLOWED_HOSTS=157.230.62.218"
+Environment="DB_HOST=localhost"
+Environment="DB_PORT=5432"
+Environment="DB_USER=seps_user"
+Environment="DB_PASS=seps2024"
+Environment="RAKKUN_API_URL=http://localhost:8001/api/rakkun/preguntar"
+
+ExecStart=/usr/local/bin/gunicorn \
+    --config /var/www/seps_web/gunicorn.conf.py \
+    seps_project.wsgi:application
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

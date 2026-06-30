@@ -1,0 +1,40 @@
+{
+    "Type": "Live2D Expression",
+    "Parameters": [
+        {
+            "Id": "ParamGloveOnOff",
+            "Value": 1.0,
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamJacketOff",
+            "Value": 1.0,
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamNormalClothes",
+            "Value": 1.0,
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamMaid",
+            "Value": 0.0,
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamOutfit2",
+            "Value": 0.0,
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamMizugi",
+            "Value": 1.0,
+            "Blend": "Add"
+        },
+        {
+            "Id": "ParamHairStyle",
+            "Value": 1.0,
+            "Blend": "Add"
+        }
+    ]
+}
