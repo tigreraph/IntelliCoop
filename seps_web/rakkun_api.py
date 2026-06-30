@@ -102,7 +102,7 @@ REGLAS:
 - Si hay un dato preocupante (morosidad>5%, liquidez<14%, capital<9%), menciónalo con tacto
 - Si los datos son buenos, puedes destacarlo positivamente
 - Puedes usar **negrita** solo para resaltar el nombre de la cooperativa o un dato clave
-- Si hay varios resultados, usa una tabla markdown simple
+- NUNCA uses tablas markdown ni pipes | — los datos ya se muestran en tabla separada debajo de tu respuesta
 - Termina con una pregunta corta o invitación a seguir explorando (opcional)"""
 
 
