@@ -35,6 +35,24 @@ def _to_py(rows):
     return result
 
 
+def inicio(request):
+    stack = [
+        {'nombre': 'Python 3.11',         'icon': 'ti ti-brand-python',    'color': '#3b82f6'},
+        {'nombre': 'Django 5',            'icon': 'ti ti-server',          'color': '#16a34a'},
+        {'nombre': 'PostgreSQL 16',       'icon': 'ti ti-database',        'color': '#0ea5e9'},
+        {'nombre': 'DuckDB',              'icon': 'ti ti-duck',            'color': '#f59e0b'},
+        {'nombre': 'DeepSeek V3 (LLM)',   'icon': 'ti ti-brain',           'color': '#8b5cf6'},
+        {'nombre': 'FastAPI',             'icon': 'ti ti-bolt',            'color': '#6366f1'},
+        {'nombre': 'Nginx',               'icon': 'ti ti-activity',        'color': '#64748b'},
+        {'nombre': 'Let\'s Encrypt HTTPS','icon': 'ti ti-lock',            'color': '#10b981'},
+        {'nombre': 'Google TTS Neural',   'icon': 'ti ti-microphone',      'color': '#ec4899'},
+        {'nombre': 'Live2D (Avatar)',      'icon': 'ti ti-mood-smile',      'color': '#f97316'},
+        {'nombre': 'scikit-learn / scipy','icon': 'ti ti-chart-dots',      'color': '#0ea5e9'},
+        {'nombre': 'SEPS Ecuador (datos)','icon': 'ti ti-building-bank',   'color': '#d97706'},
+    ]
+    return render(request, 'inicio.html', {'stack': stack})
+
+
 def dashboard(request):
     conn = get_db()
     try:

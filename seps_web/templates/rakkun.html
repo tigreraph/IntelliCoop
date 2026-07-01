@@ -517,17 +517,4 @@ document.getElementById('chatForm').addEventListener('submit', async function(e)
   } catch(err) {
     thinkRow.remove();
     setAvatarState('idle');
-    appendBubble('rakkun', `<p style="color:#f87171;"><i class="ti ti-wifi-off" style="font-size:13px;vertical-align:middle;margin-right:4px;"></i>Error de red: ${esc(err.message)}</p>`);
-  } finally {
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    inp.focus();
-  }
-});
-
-document.getElementById('userMsg').addEventListener('input', function(){
-  this.style.height = 'auto';
-  this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-});
-</script>
-{% endblock %}
+    a
