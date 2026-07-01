@@ -123,7 +123,7 @@
 </template>
 
 <!-- Layout principal: chat + panel lateral -->
-<div style="display:grid;grid-template-columns:1fr 280px;gap:20px;height:calc(100vh - 180px);min-height:460px;" id="chatLayout">
+<div id="chatLayout">
 
   <!-- Panel chat -->
   <div class="ic-card !p-0" style="display:flex;flex-direction:column;overflow:hidden;">
@@ -356,9 +356,24 @@
   0%,80%,100%{ transform:translateY(0); opacity:.4; }
   40%{ transform:translateY(-6px); opacity:1; }
 }
+/* ── Chat layout grid ───────────────────────────── */
+#chatLayout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+  height: calc(100vh - 180px);
+  min-height: 460px;
+}
 @media(max-width:768px){
-  #chatLayout{ grid-template-columns:1fr; height:auto; }
-  #chatLayout > div:last-child{ display:none; }
+  #chatLayout {
+    grid-template-columns: 1fr;
+    height: calc(100vh - 130px);
+    min-height: 0;
+    gap: 0;
+  }
+  #chatLayout > div:last-child { display: none; }
+  /* Input más cómodo en mobile */
+  #userMsg { font-size: 16px !important; } /* evita zoom en iOS */
 }
 </style>
 {% endblock %}
