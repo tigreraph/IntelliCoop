@@ -222,7 +222,7 @@
   </div>
 
   <!-- Panel lateral -->
-  <div style="display:flex;flex-direction:column;gap:16px;overflow-y:auto;">
+  <div id="chatSidePanel" style="flex-direction:column;gap:16px;overflow-y:auto;">
 
     <!-- Sugerencias -->
     <div class="ic-card !p-4">
@@ -364,16 +364,20 @@
   height: calc(100vh - 180px);
   min-height: 460px;
 }
+#chatSidePanel { display: flex; }
+
 @media(max-width:768px){
   #chatLayout {
     grid-template-columns: 1fr;
-    height: calc(100vh - 130px);
+    height: calc(100vh - 116px); /* viewport - topbar - padding */
     min-height: 0;
     gap: 0;
   }
-  #chatLayout > div:last-child { display: none; }
-  /* Input más cómodo en mobile */
-  #userMsg { font-size: 16px !important; } /* evita zoom en iOS */
+  #chatSidePanel { display: none; }
+  /* Sin padding extra en mobile para que el chat llene la pantalla */
+  main { padding: 8px !important; }
+  /* Evita zoom automático en iOS al tocar el input */
+  #userMsg { font-size: 16px !important; }
 }
 </style>
 {% endblock %}
