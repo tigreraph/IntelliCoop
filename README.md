@@ -224,7 +224,7 @@ Estudiante de Big Data · Ecuador
 **Diego Mendez**  
 Estudiante de Big Data · Ecuador  
 
-[![GitHub](https://img.shields.io/badge/GitHub-tigreraph-181717?style=flat&logo=github)](https://github.com/tigreraph)
+[![GitHub](https://img.shields.io/badge/GitHub-medezperaltadiego-181717?style=flat&logo=github)](https://github.com/medezperaltadiego-ship-it)
 
 ---
 
