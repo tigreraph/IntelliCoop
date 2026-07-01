@@ -26,7 +26,7 @@
 {% endblock %}
 
 {% block content %}
-<div id="avatarLayout" style="display:grid;grid-template-columns:1fr 340px;gap:0;height:calc(100vh - 124px);min-height:500px;border-radius:16px;overflow:hidden;border:1px solid var(--border-dim);">
+<div id="avatarLayout">
 
   <!-- ── Panel Avatar ── -->
   <div id="avatarPanel" style="position:relative;background:linear-gradient(160deg,#0f0c1a 0%,#1a1035 50%,#0d1a2e 100%);overflow:hidden;">
@@ -66,7 +66,7 @@
   </div>
 
   <!-- ── Panel Chat ── -->
-  <div style="display:flex;flex-direction:column;background:var(--bg-card);border-left:1px solid var(--border-dim);overflow:hidden;min-height:0;">
+  <div id="avatarChatPanel" style="flex-direction:column;background:var(--bg-card);border-left:1px solid var(--border-dim);overflow:hidden;min-height:0;">
 
     <!-- Header -->
     <div style="padding:13px 15px;border-bottom:1px solid var(--border-dim);display:flex;align-items:center;gap:9px;flex-shrink:0;">
@@ -119,6 +119,40 @@
 </div>
 
 <style>
+/* ── Avatar layout ───────────────────────────────── */
+#avatarLayout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 0;
+  height: calc(100vh - 124px);
+  min-height: 500px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-dim);
+}
+#avatarChatPanel { display: flex; }
+
+@media(max-width:768px){
+  #avatarLayout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 42vh 1fr;  /* avatar arriba, chat abajo */
+    height: calc(100vh - 108px);
+    min-height: 0;
+    border-radius: 12px;
+  }
+  #avatarPanel { height: 42vh; }
+  #avatarChatPanel {
+    border-left: none;
+    border-top: 1px solid var(--border-dim);
+  }
+  main { padding: 8px !important; }
+  /* Controles expresión más compactos en mobile */
+  #exprControls { gap: 4px; }
+  #exprControls button { padding: 4px 8px; font-size: 10px; }
+  #userMsg { font-size: 16px !important; }
+}
+
+/* ── Burbujas ───────────────────────────────────── */
 .bubble-av { border-radius:12px;padding:10px 13px;font-size:12px;line-height:1.6;word-break:break-word; }
 .rakkun-av { background:var(--bg-base);border:1px solid var(--border-dim);color:var(--text-2);border-radius:4px 12px 12px 12px; }
 .user-av   { background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(109,40,217,.15));border:1px solid rgba(129,140,248,.25);color:var(--text-1);border-radius:12px 4px 12px 12px;margin-left:auto;max-width:90%; }
@@ -131,7 +165,6 @@
 .typing-dots span:nth-child(2){ animation-delay:.15s; }
 .typing-dots span:nth-child(3){ animation-delay:.3s; }
 @keyframes dotBounce { 0%,80%,100%{ transform:translateY(0);opacity:.4; } 40%{ transform:translateY(-6px);opacity:1; } }
-@media(max-width:900px){ #avatarLayout{grid-template-columns:1fr;} #avatarPanel{height:320px;} }
 </style>
 {% endblock %}
 
