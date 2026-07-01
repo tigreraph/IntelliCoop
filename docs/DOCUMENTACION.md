@@ -865,7 +865,13 @@ Los primeros 2 dígitos del RUC identifican la provincia sin datos externos:
 | 2026-06-30 | `_serialize_val()` helper: convierte `Decimal`, `date`, `datetime` a primitivos JSON-serializables antes de devolver filas | ✅ |
 | 2026-06-30 | `limpiar_sql()` mejorado: agrega `LIMIT 50` por defecto cuando el SQL generado por el LLM no incluye ningún LIMIT (corrige queries genéricas sin número) | ✅ |
 | 2026-06-30 | Nginx `proxy_read_timeout` aumentado de 60s a 120s — evitaba cortar respuestas antes del timeout Django de 90s | ✅ |
+| 2026-07-01 | **Dominio propio**: `intellicoop.lat` adquirido en Namecheap ($2/año, TLD .lat para Latinoamérica) | ✅ |
+| 2026-07-01 | DNS configurado: 2 registros A (`@` y `www`) apuntando a 157.230.62.218 | ✅ |
+| 2026-07-01 | **HTTPS con Let's Encrypt**: certificado SSL instalado via Certbot para `intellicoop.lat` y `www.intellicoop.lat` | ✅ |
+| 2026-07-01 | Fix SSL: SSH ocupaba puerto 443 → movido a puerto 2222, liberando 443 para Nginx HTTPS | ✅ |
+| 2026-07-01 | `ALLOWED_HOSTS` actualizado con dominio en `.env` del VPS | ✅ |
+| 2026-07-01 | **IntelliCoop en producción**: https://intellicoop.lat — dominio + HTTPS + datos reales SEPS | ✅ |
 
 ---
 
-*Documentación generada el 2026-06-24 · Actualizada el 2026-06-30 · IntelliCoop v1.3 — EN PRODUCCIÓN*
+*Documentación generada el 2026-06-24 · Actualizada el 2026-07-01 · IntelliCoop v1.4 — EN PRODUCCIÓN · https://intellicoop.lat*

@@ -151,13 +151,13 @@ Abrir en el navegador: `http://127.0.0.1:8000`
 ```env
 SECRET_KEY=tu-secret-key-django
 DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1
+ALLOWED_HOSTS=localhost,***.*.*.
 DB_HOST=localhost
-DB_PORT=5432
+DB_PORT=****
 DB_USER=postgres
-DB_PASS=tu-password
-OPENROUTER_KEY=sk-or-v1-...
-GOOGLE_TTS_KEY=AIzaSy...   # opcional, para voz en Rakkun Avatar
+DB_PASS=***
+OPENROUTER_KEY=***
+GOOGLE_TTS_KEY=****   # opcional, para voz en Rakkun Avatar
 ```
 
 ---
@@ -218,7 +218,11 @@ Ver [`docs/DOCUMENTACION.md`](docs/DOCUMENTACION.md) — Sección 12 para instru
 
 **Jonnathan Tigre**  
 Estudiante de Big Data · Ecuador  
-Proyecto de Titulación 2026
+
+[![GitHub](https://img.shields.io/badge/GitHub-tigreraph-181717?style=flat&logo=github)](https://github.com/tigreraph)
+
+**Diego Mendez**  
+Estudiante de Big Data · Ecuador  
 
 [![GitHub](https://img.shields.io/badge/GitHub-tigreraph-181717?style=flat&logo=github)](https://github.com/tigreraph)
 
