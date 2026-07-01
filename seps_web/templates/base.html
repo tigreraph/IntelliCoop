@@ -261,8 +261,11 @@
 
 <div class="flex min-h-screen">
 
+  <!-- ─── Overlay mobile ─────────────────────────────────────── -->
+  <div id="sidebar-overlay" onclick="closeSidebar()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40;backdrop-filter:blur(2px);"></div>
+
   <!-- ─── Sidebar ──────────────────────────────────────────── -->
-  <aside class="sidebar fixed top-0 left-0 h-screen w-60 flex flex-col z-50 overflow-y-auto flex-shrink-0">
+  <aside id="sidebar" class="sidebar fixed top-0 left-0 h-screen w-60 flex flex-col z-50 overflow-y-auto flex-shrink-0" style="transition:transform .28s cubic-bezier(.16,1,.3,1);">
 
     <!-- Branding -->
     <div class="sidebar-brand p-5 flex-shrink-0">
@@ -323,13 +326,20 @@
   </aside>
 
   <!-- ─── Main wrapper ─────────────────────────────────────── -->
-  <div class="ml-60 flex-1 flex flex-col min-h-screen overflow-x-hidden">
+  <div id="main-content" class="flex-1 flex flex-col min-h-screen overflow-x-hidden" style="margin-left:0;transition:margin-left .28s cubic-bezier(.16,1,.3,1);">
 
     <!-- Topbar -->
-    <header class="topbar sticky top-0 z-40 px-6 py-3.5 flex items-center justify-between flex-shrink-0">
-      <div>
-        <h1 style="font-size:13.5px;font-weight:700;color:var(--text-1);letter-spacing:-.01em;">{% block page_title %}IntelliCoop{% endblock %}</h1>
-        <p style="font-size:11px;color:var(--text-3);margin-top:1px;">{% block page_subtitle %}&nbsp;{% endblock %}</p>
+    <header class="topbar sticky top-0 z-40 px-4 py-3.5 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center gap-3">
+        <!-- Hamburger (solo mobile) -->
+        <button id="hamburger-btn" onclick="toggleSidebar()" aria-label="Menú"
+          style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;border:1px solid var(--border);background:#fff;color:var(--text-2);cursor:pointer;flex-shrink:0;">
+          <i class="ti ti-menu-2" style="font-size:18px;"></i>
+        </button>
+        <div>
+          <h1 style="font-size:13.5px;font-weight:700;color:var(--text-1);letter-spacing:-.01em;">{% block page_title %}IntelliCoop{% endblock %}</h1>
+          <p style="font-size:11px;color:var(--text-3);margin-top:1px;">{% block page_subtitle %}&nbsp;{% endblock %}</p>
+        </div>
       </div>
       <div class="flex items-center gap-3">
         {% block topbar_actions %}{% endblock %}
@@ -355,6 +365,7 @@
 <div id="toast"><i class="ti ti-alert-triangle" style="font-size:14px;flex-shrink:0;"></i><span>Sin conexión con el servicio</span></div>
 
 <script>
+  // ── Active nav ──────────────────────────────────────────────
   (function(){
     const p = window.location.pathname;
     document.querySelectorAll('[data-path]').forEach(a => {
@@ -363,12 +374,63 @@
     });
   })();
 
+  // ── Toast ───────────────────────────────────────────────────
   window.showToast = function(msg, ms=4500){
     const t = document.getElementById('toast');
     t.querySelector('span').textContent = msg || 'Error de conexión';
     t.classList.add('show');
     setTimeout(()=>t.classList.remove('show'), ms);
   };
+
+  // ── Sidebar responsive ──────────────────────────────────────
+  const SIDEBAR_W = 240; // px (w-60 = 15rem = 240px)
+  const sidebar  = document.getElementById('sidebar');
+  const overlay  = document.getElementById('sidebar-overlay');
+  const main     = document.getElementById('main-content');
+  const hamburger = document.getElementById('hamburger-btn');
+
+  function isDesktop() { return window.innerWidth >= 1024; }
+
+  function applyLayout() {
+    if (isDesktop()) {
+      // Desktop: sidebar siempre visible, main con margen
+      sidebar.style.transform  = 'translateX(0)';
+      overlay.style.display    = 'none';
+      main.style.marginLeft    = SIDEBAR_W + 'px';
+      hamburger.style.display  = 'none';
+    } else {
+      // Mobile: sidebar oculto por defecto
+      sidebar.style.transform  = 'translateX(-100%)';
+      overlay.style.display    = 'none';
+      main.style.marginLeft    = '0';
+      hamburger.style.display  = 'flex';
+    }
+  }
+
+  function openSidebar() {
+    sidebar.style.transform = 'translateX(0)';
+    overlay.style.display   = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  window.closeSidebar = function() {
+    sidebar.style.transform = 'translateX(-100%)';
+    overlay.style.display   = 'none';
+    document.body.style.overflow = '';
+  };
+
+  window.toggleSidebar = function() {
+    const open = sidebar.style.transform === 'translateX(0px)' || sidebar.style.transform === 'translateX(0)';
+    open ? closeSidebar() : openSidebar();
+  };
+
+  // Cerrar sidebar al navegar en mobile
+  document.querySelectorAll('#sidebar a').forEach(a => {
+    a.addEventListener('click', () => { if (!isDesktop()) closeSidebar(); });
+  });
+
+  applyLayout();
+  window.addEventListener('resize', applyLayout);
 </script>
 
 {% block scripts %}{% endblock %}
