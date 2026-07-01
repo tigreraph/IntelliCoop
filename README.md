@@ -37,11 +37,11 @@ Aplicación web de análisis financiero para las **226 cooperativas de ahorro y 
 
 | Dashboard | Ranking CAMEL |
 |:---:|:---:|
-| ![Dashboard](docs/assets/dashboard.png) | ![Ranking](docs/assets/ranking.png) |
+| ![Dashboard](docs/assets/Dashboard.png) | ![Ranking](docs/assets/Ranking_Camel.png) |
 
 | Chat Rakkun IA | Avatar VTuber |
 |:---:|:---:|
-| ![Chat](docs/assets/chat.png) | ![Avatar](docs/assets/avatar.png) |
+| ![Chat](docs/assets/Chat.png) | ![Avatar](docs/assets/Avatar.png) |
 
 </div>
 
