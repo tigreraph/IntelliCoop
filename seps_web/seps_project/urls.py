@@ -12,4 +12,6 @@ urlpatterns = [
     path('rakkun/', views.rakkun, name='rakkun'),
     path('rakkun-avatar/', views.rakkun_avatar, name='rakkun_avatar'),
     path('prediccion/', views.prediccion, name='prediccion'),
-    path('api/rakkun/preguntar/', views.rakkun_chat, name='rakkun_ch
+    path('api/rakkun/preguntar/', views.rakkun_chat, name='rakkun_chat'),
+    path('api/tts/', views.tts, name='tts'),
+]

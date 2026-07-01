@@ -625,4 +625,26 @@ document.getElementById('chatForm').addEventListener('submit', async function(e)
       if(data.sql){
         html+=`<details style="margin-top:8px;cursor:pointer;">
           <summary style="font-size:10px;color:var(--text-4);user-select:none;">Ver SQL generado</summary>
-          <pre style="margin-top:4px;font-family:'Fira Code',monospace;font-size:10px;background:rgba(0,0,0,.05);border:1px solid var(--border-dim);border-radius:6px;padding:8px;overf
+          <pre style="margin-top:4px;font-family:'Fira Code',monospace;font-size:10px;background:rgba(0,0,0,.05);border:1px solid var(--border-dim);border-radius:6px;padding:8px;overflow-x:auto;color:var(--text-3);">${esc(data.sql)}</pre>
+        </details>`;
+      }
+      appendMsg('rakkun', html||'<p style="margin:0;">Sin resultado.</p>');
+      autoExpr(data.respuesta);
+      speak(data.respuesta);   // ← respuesta por voz
+    }
+  } catch(err){
+    thinking.remove();
+    appendMsg('rakkun',`<p style="color:#f87171;margin:0;"><i class="ti ti-wifi-off" style="font-size:12px;vertical-align:middle;margin-right:4px;"></i>Error de red: ${esc(err.message)}</p>`);
+    if(live2dModel) try{live2dModel.expression('sad');}catch(e){}
+  } finally {
+    btn.disabled=false; btn.style.opacity='1';
+    inp.focus();
+  }
+});
+
+document.getElementById('userMsg').addEventListener('input', function(){
+  this.style.height='auto';
+  this.style.height=Math.min(this.scrollHeight,90)+'px';
+});
+</script>
+{% endblock %}
